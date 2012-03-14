@@ -23,10 +23,12 @@ package
 		private const L:Number = 0.00001;
 		
 		private var area:MovieClip;
+		private var marked:Boolean;
 		
-		public function Particula(type:String, area:MovieClip) 
+		public function Particula(type:String, area:MovieClip, marked:Boolean = false) 
 		{
 			this.area = area;
+			this.marked = marked;
 			
 			x = area.x + Math.random() * area.width;
 			y = area.y + Math.random() * area.height;
@@ -40,7 +42,7 @@ package
 					cor = 0x0000FF;
 					break;
 				case H2:
-					cor = 0xFFFF00
+					cor = 0xFF8040
 					break;
 				default:
 					cor = 0xFFFFFF;
@@ -53,7 +55,7 @@ package
 		private function drawParticula(cor:uint):void 
 		{
 			graphics.beginFill(cor);
-			graphics.drawRect( -0.5, -0.5, 1, 1);
+			graphics.drawRect( 0, 0, 1.5, 1.5);
 		}
 		
 		public function startMoving():void

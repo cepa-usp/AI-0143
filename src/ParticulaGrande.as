@@ -6,6 +6,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.filters.GlowFilter;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -17,15 +18,23 @@ package
 		public static const H2O:String = "h2o";
 		public static const H2:String = "o2";
 		
+		public static const DIE:String = "die";
+		
 		private const MOVE_DELAY:Number = 100;
 		
 		private var timer:Timer;
 		
 		private var area:MovieClip;
+		private var marked:Boolean
+		private var lifeTimer:Timer;
 		
-		public function ParticulaGrande(type:String, area:MovieClip) 
+		public function ParticulaGrande(type:String, area:MovieClip, lifeTime:Number, marked:Boolean = false) 
 		{
 			this.area = area;
+			this.marked = marked;
+			
+			lifeTimer = new Timer(lifeTime * 1000, 1);
+			lifeTimer.addEventListener(TimerEvent.TIMER_COMPLETE, startDie);
 			
 			x = area.x + Math.random() * area.width;
 			y = area.y + Math.random() * area.height;
@@ -33,26 +42,44 @@ package
 			var cor:uint;
 			switch(type) {
 				case CO2:
-					cor = 0x282828;
+					if (marked) addChild(new Part_CO2_m());
+					else addChild(new Part_CO2());
 					break;
 				case H2O:
-					cor = 0x0000FF;
+					if (marked) addChild(new Part_H2O_m());
+					else addChild(new Part_H2O());
 					break;
 				case H2:
-					cor = 0xFFFF00
+					if (marked) addChild(new Part_H2_m());
+					else addChild(new Part_H2());
 					break;
 				default:
-					cor = 0xFFFFFF;
+					if (marked) addChild(new Part_CO2_m());
+					else addChild(new Part_CO2());
 					break;
 			}
 			
-			drawParticula(cor);
+			//drawParticula(cor);
+		}
+		
+		private function startDie(e:TimerEvent):void 
+		{
+			Actuate.tween(this, 1, { alpha: 0 } ).ease(Linear.easeNone).onComplete(die);
+		}
+		
+		private function die():void 
+		{
+			timer.stop();
+			timer.removeEventListener(TimerEvent.TIMER, nextMove);
+			dispatchEvent(new Event(DIE, true));
 		}
 		
 		private function drawParticula(cor:uint):void 
 		{
 			graphics.beginFill(cor);
 			graphics.drawCircle(0, 0, 10);
+			
+			if (marked) this.filters = [new GlowFilter(0xFF0000)];
 		}
 		
 		public function startMoving():void
@@ -60,6 +87,8 @@ package
 			timer = new Timer(MOVE_DELAY);
 			timer.addEventListener(TimerEvent.TIMER, nextMove);
 			timer.start();
+			
+			lifeTimer.start();
 		}
 		
 		private const ANGULAR_SPREAD:Number = 30 * Math.PI / 180;

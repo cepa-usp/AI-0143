@@ -2,7 +2,6 @@ package
 {
 	import cepa.utils.ToolTip;
 	import fl.controls.CheckBox;
-	import fl.controls.Slider;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,7 +24,6 @@ package
 		
 		private var check_co2:CheckBox;
 		private var check_h2o:CheckBox;
-		private var slider_luz:Slider;
 		
 		private var particulasAr:Array = [];
 		private var particulasAgua:Array = [];
@@ -51,32 +49,70 @@ package
 			
 			MovieClip(partGrandes).mask = lupaMask;
 			lupa.visible = false;
+			lupaMask.scaleX = lupaMask.scaleY = 0;
 			
 			setChildIndex(partGrandes, numChildren - 1);
 			setChildIndex(lupa, numChildren - 1);
 			setChildIndex(bordaAtividade, numChildren - 1);
 		}
 		
+		
 		private function criaParticulasGrandes():void 
 		{
 			var i:int;
 			for (i = 0; i < 75; i++) 
 			{
+				//trace(Math.floor(i % 5) + 1);
 				var part:ParticulaGrande;
-				if (Math.random() > 0.5) part = new ParticulaGrande(ParticulaGrande.CO2, areaArGrande);
-				else part = new ParticulaGrande(Particula.H2, areaAr);
+				if (Math.random() > 0.5) part = new ParticulaGrande(ParticulaGrande.CO2, areaArGrande, i/10 + Math.random());
+				else part = new ParticulaGrande(Particula.H2, areaAr, Math.floor(i / 5) + 1 + Math.random());
+				part.addEventListener(ParticulaGrande.DIE, criaNovaParticulaGrandeCima);
 				partGrandes.addChild(part);
 				//particulasAr.push(part);
 				part.startMoving();
 			}
 			
-			for (i = 0; i < 15; i++) 
+			for (i = 0; i < 20; i++) 
 			{
-				var part2:ParticulaGrande = new ParticulaGrande(ParticulaGrande.H2O, areaAguaGrande);
+				var part2:ParticulaGrande = new ParticulaGrande(ParticulaGrande.H2O, areaAguaGrande, i/3 + Math.random());
 				partGrandes.addChild(part2);
+				part2.addEventListener(ParticulaGrande.DIE, criaNovaParticulaGrandeBaixo);
 				//particulasAgua.push(part2);
 				part2.startMoving();
 			}
+		}
+		
+		private function criaNovaParticulaGrandeCima(e:Event):void 
+		{
+			var partToRemove:ParticulaGrande = ParticulaGrande(e.target);
+			partGrandes.removeChild(partToRemove);
+			
+			var part:ParticulaGrande;
+			var type:String;
+			
+			if (Math.random() > 0.5) type = ParticulaGrande.CO2;
+			else type = Particula.H2;
+			
+			if (type == ParticulaGrande.CO2) {
+				part = new ParticulaGrande(ParticulaGrande.CO2, areaArGrande, 5, check_co2.selected);
+			}else {
+				part = new ParticulaGrande(ParticulaGrande.H2, areaArGrande, 5, check_h2o.selected);
+			}
+			
+			part.addEventListener(ParticulaGrande.DIE, criaNovaParticulaGrandeCima);
+			partGrandes.addChild(part);
+			part.startMoving();
+		}
+		
+		private function criaNovaParticulaGrandeBaixo(e:Event):void 
+		{
+			var partToRemove:ParticulaGrande = ParticulaGrande(e.target);
+			partGrandes.removeChild(partToRemove);
+			
+			var part2:ParticulaGrande = new ParticulaGrande(ParticulaGrande.H2O, areaAguaGrande, 5, check_h2o.selected);
+			partGrandes.addChild(part2);
+			part2.addEventListener(ParticulaGrande.DIE, criaNovaParticulaGrandeBaixo);
+			part2.startMoving();
 		}
 		
 		private function criaParticulasPequenas():void 
@@ -105,17 +141,9 @@ package
 		{
 			check_co2 = cb_co2;
 			check_h2o = cb_h2o;
-			slider_luz = sl_luz;
 			
 			check_co2.label = "Marcar";
 			check_h2o.label = "Marcar";
-			
-			slider_luz.width = 200;
-			slider_luz.minimum = 0;
-			slider_luz.maximum = 100;
-			slider_luz.tickInterval = 10;
-			slider_luz.snapInterval = 1;
-			slider_luz.liveDragging = true;
 		}
 		
 		/**
