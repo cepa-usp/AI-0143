@@ -54,6 +54,8 @@ package
 			setChildIndex(partGrandes, numChildren - 1);
 			setChildIndex(lupa, numChildren - 1);
 			setChildIndex(bordaAtividade, numChildren - 1);
+			
+			iniciaTutorial();
 		}
 		
 		
@@ -214,14 +216,6 @@ package
 		}
 		
 		/**
-		 * Inicia o tutorial da atividade.
-		 */
-		private function iniciaTutorial(e:MouseEvent):void 
-		{
-			
-		}
-		
-		/**
 		 * Abrea a tela de orientações.
 		 */
 		private function openOrientacoes(e:MouseEvent):void 
@@ -247,6 +241,63 @@ package
 		private function reset(e:MouseEvent):void 
 		{
 			
+		}
+		
+		
+		//Tutorial
+		private var posQuadradoArraste:Point = new Point();
+		private var balao:CaixaTexto;
+		private var pointsTuto:Array;
+		private var tutoBaloonPos:Array;
+		private var tutoPos:int;
+		private var tutoSequence:Array = ["Nesta atividade você deve reproduzir a experiência de Ruben e Kamen, indentificando a origem do oxigênio formando pela fotossíntese: a água ou o dióxido de carbono?",
+										  "Neste recipiente há um pé de feijão exposto à luz e com suprimento controlado de dióxido de carbono e água.",
+										  "Mova o mouse sobre o recipiente para \"ver\" mais de perto as moléculas.",
+										  "Selecione para marcar o dióxido de carbono com o isótopo 18 do átomo Oxigênio.",
+										  "Selecione para marcar as moléculas de oxigênio com o isótopo 18 do átomo Oxigênio."];
+										  
+		
+		/**
+		 * Inicia o tutorial da atividade.
+		 */								  
+		private function iniciaTutorial(e:MouseEvent = null):void 
+		{
+			tutoPos = 0;
+			if(balao == null){
+				balao = new CaixaTexto(true);
+				addChild(balao);
+				balao.visible = false;
+				
+				pointsTuto = 	[new Point(260, 160),
+								new Point(250, 270),
+								new Point(435, 270),
+								new Point(check_co2.x + 12, check_co2.y + check_co2.height - 10),
+								new Point(check_h2o.x + 12, check_h2o.y + check_h2o.height - 10)];
+								
+				tutoBaloonPos = [["" , ""],
+								[CaixaTexto.RIGHT, CaixaTexto.CENTER],
+								[CaixaTexto.LEFT, CaixaTexto.CENTER],
+								[CaixaTexto.TOP, CaixaTexto.FIRST],
+								[CaixaTexto.TOP, CaixaTexto.FIRST]];
+			}
+			
+			balao.removeEventListener(Event.CLOSE, closeBalao);
+			balao.setText(tutoSequence[tutoPos], tutoBaloonPos[tutoPos][0], tutoBaloonPos[tutoPos][1]);
+			balao.setPosition(pointsTuto[tutoPos].x, pointsTuto[tutoPos].y);
+			balao.addEventListener(Event.CLOSE, closeBalao);
+			balao.visible = true;
+		}
+		
+		private function closeBalao(e:Event):void 
+		{
+			tutoPos++;
+			if (tutoPos >= tutoSequence.length) {
+				balao.removeEventListener(Event.CLOSE, closeBalao);
+				balao.visible = false;
+			}else {
+				balao.setText(tutoSequence[tutoPos], tutoBaloonPos[tutoPos][0], tutoBaloonPos[tutoPos][1]);
+				balao.setPosition(pointsTuto[tutoPos].x, pointsTuto[tutoPos].y);
+			}
 		}
 		
 	}
