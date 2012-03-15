@@ -39,6 +39,9 @@ package
 			x = area.x + Math.random() * area.width;
 			y = area.y + Math.random() * area.height;
 			
+			if (Math.random() > 0.5) rotMult = 1;
+			else rotMult = -1;
+			
 			var cor:uint;
 			switch(type) {
 				case CO2:
@@ -59,12 +62,16 @@ package
 					break;
 			}
 			
+			//this.alpha = 0;
+			scaleX = scaleY = 0;
+			
 			//drawParticula(cor);
 		}
 		
 		private function startDie(e:TimerEvent):void 
 		{
-			Actuate.tween(this, 1, { alpha: 0 } ).ease(Linear.easeNone).onComplete(die);
+			//Actuate.tween(this, 1, { alpha: 0 } ).ease(Linear.easeNone).onComplete(die);
+			Actuate.tween(this, 1, { scaleX: 0, scaleY: 0 } ).ease(Linear.easeNone).onComplete(die);
 		}
 		
 		private function die():void 
@@ -89,11 +96,16 @@ package
 			timer.start();
 			
 			lifeTimer.start();
+			
+			//Actuate.tween(this, 1, { alpha: 1 } ).ease(Linear.easeNone);
+			Actuate.tween(this, 1, { scaleX: 1, scaleY: 1 } ).ease(Linear.easeNone);
 		}
 		
 		private const ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
 		private var angle:Number = 2 * Math.PI * Math.random();
 		private var step:Number = 2;
+		private var rotStep:Number = Math.random() * 5 + 5;
+		private var rotMult:Number;
 		
 		private function nextMove (event:Event = null) : void {
 				
@@ -108,12 +120,16 @@ package
 				
 				xpos = x + step * Math.cos(angle);
 				ypos = y + step * Math.sin(angle);
+				
+				rotMult *= -1;
 			}
+			
+			var newRotation:Number = rotation + rotMult * rotStep;
 			
 			var tmp_x:Number = x;
 			var tmp_y:Number = y;
 			
-			Actuate.tween(this, MOVE_DELAY / 1000, { x: xpos, y: ypos } ).ease(Linear.easeNone);
+			Actuate.tween(this, MOVE_DELAY / 1000, { x: xpos, y: ypos, rotation: newRotation } ).ease(Linear.easeNone);
 			
 			//x = xpos;
 			//y = ypos;

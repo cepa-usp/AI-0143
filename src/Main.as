@@ -60,7 +60,7 @@ package
 		private function criaParticulasGrandes():void 
 		{
 			var i:int;
-			for (i = 0; i < 75; i++) 
+			for (i = 0; i < 50; i++) 
 			{
 				//trace(Math.floor(i % 5) + 1);
 				var part:ParticulaGrande;
