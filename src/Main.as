@@ -76,7 +76,7 @@ package
 				part.startMoving();
 			}
 			
-			for (i = 0; i < 30; i++) 
+			for (i = 0; i < 20; i++) 
 			{
 				var part2:ParticulaGrande = new ParticulaGrande(ParticulaGrande.H2O, areaAguaGrande, i/3 + Math.random());
 				partGrandes.addChild(part2);
@@ -132,7 +132,7 @@ package
 				part.startMoving();
 			}
 			
-			for (i = 0; i < 30; i++) 
+			for (i = 0; i < 50; i++) 
 			{
 				var part2:Particula = new Particula(Particula.H2O, areaAgua);
 				addChild(part2);

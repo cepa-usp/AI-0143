@@ -20,10 +20,11 @@ package
 		
 		public static const DIE:String = "die";
 		
-		private const ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
-		private var MOVE_DELAY:Number = 200;
+		private var ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
+		private var MOVE_DELAY:Number = 100;
 		private var angle:Number = 2 * Math.PI * Math.random();
-		private var step:Number = 5;
+		private var step:Number = 2;
+		
 		private var rotStep:Number = Math.random() * 5 + 5;
 		private var rotMult:Number;
 		
@@ -56,9 +57,9 @@ package
 				case H2O:
 					if (marked) addChild(new Part_H2O_m());
 					else addChild(new Part_H2O());
-					step = 10;
-					rotStep = Math.random() * 20 + 10;
 					MOVE_DELAY = 80;
+					step = 10;
+					ANGULAR_SPREAD = 180 * Math.PI / 180;
 					break;
 				case H2:
 					if (marked) addChild(new Part_H2_m());
