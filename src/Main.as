@@ -55,6 +55,8 @@ package
 			setChildIndex(lupa, numChildren - 1);
 			setChildIndex(bordaAtividade, numChildren - 1);
 			
+			mudaEstadoParticulas(null);
+			
 			iniciaTutorial();
 		}
 		
@@ -74,7 +76,7 @@ package
 				part.startMoving();
 			}
 			
-			for (i = 0; i < 20; i++) 
+			for (i = 0; i < 30; i++) 
 			{
 				var part2:ParticulaGrande = new ParticulaGrande(ParticulaGrande.H2O, areaAguaGrande, i/3 + Math.random());
 				partGrandes.addChild(part2);
@@ -173,7 +175,18 @@ package
 			botoes.creditos.addEventListener(MouseEvent.CLICK, openCreditos);
 			botoes.resetButton.addEventListener(MouseEvent.CLICK, reset);
 			
+			check_co2.addEventListener(MouseEvent.CLICK, mudaEstadoParticulas);
+			check_h2o.addEventListener(MouseEvent.CLICK, mudaEstadoParticulas);
+			
 			createToolTips();
+		}
+		
+		private function mudaEstadoParticulas(e:MouseEvent):void 
+		{
+			h2oSel.visible = check_h2o.selected;
+			h2oNormal.visible = !check_h2o.selected;
+			co2Sel.visible = check_co2.selected;
+			co2Normal.visible = !check_co2.selected;
 		}
 		
 		private function movingLupa(e:MouseEvent):void 
@@ -208,11 +221,16 @@ package
 			var resetTT:ToolTip = new ToolTip(botoes.resetButton, "Reiniciar", 12, 0.8, 100, 0.6, 0.1);
 			var infoTT:ToolTip = new ToolTip(botoes.creditos, "Créditos", 12, 0.8, 100, 0.6, 0.1);
 			
+			var infoO2:ToolTip = new ToolTip(check_h2o, "Marcar as moléculas de água com Oxigênio-18", 12, 0.8, 200, 0.6, 0.1);
+			var infoC02:ToolTip = new ToolTip(check_co2, "Marcar as moléculas de dióxido de carbono com Oxigênio-18", 12, 0.8, 200, 0.6, 0.1);
+			
 			addChild(intTT);
 			addChild(instTT);
 			addChild(resetTT);
 			addChild(infoTT);
 			
+			addChild(infoO2);
+			addChild(infoC02);
 		}
 		
 		/**
@@ -250,7 +268,7 @@ package
 		private var pointsTuto:Array;
 		private var tutoBaloonPos:Array;
 		private var tutoPos:int;
-		private var tutoSequence:Array = ["Nesta atividade você deve reproduzir a experiência de Ruben e Kamen, indentificando a origem do oxigênio formando pela fotossíntese: a água ou o dióxido de carbono?",
+		private var tutoSequence:Array = ["Nesta atividade você deve reproduzir a experiência de Ruben e Kamen, indentificando a origem do oxigênio formado pela fotossíntese: a água ou o dióxido de carbono?",
 										  "Neste recipiente há um pé de feijão exposto à luz e com suprimento controlado de dióxido de carbono e água.",
 										  "Mova o mouse sobre o recipiente para \"ver\" mais de perto as moléculas.",
 										  "Selecione para marcar o dióxido de carbono com o isótopo 18 do átomo Oxigênio.",

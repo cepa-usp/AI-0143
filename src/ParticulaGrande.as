@@ -20,7 +20,12 @@ package
 		
 		public static const DIE:String = "die";
 		
-		private const MOVE_DELAY:Number = 100;
+		private const ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
+		private var MOVE_DELAY:Number = 200;
+		private var angle:Number = 2 * Math.PI * Math.random();
+		private var step:Number = 5;
+		private var rotStep:Number = Math.random() * 5 + 5;
+		private var rotMult:Number;
 		
 		private var timer:Timer;
 		
@@ -51,6 +56,9 @@ package
 				case H2O:
 					if (marked) addChild(new Part_H2O_m());
 					else addChild(new Part_H2O());
+					step = 10;
+					rotStep = Math.random() * 20 + 10;
+					MOVE_DELAY = 80;
 					break;
 				case H2:
 					if (marked) addChild(new Part_H2_m());
@@ -99,13 +107,21 @@ package
 			
 			//Actuate.tween(this, 1, { alpha: 1 } ).ease(Linear.easeNone);
 			Actuate.tween(this, 1, { scaleX: 1, scaleY: 1 } ).ease(Linear.easeNone);
+			this.scaleX = this.scaleY = Math.min(Math.random() + 0.2, 1);
+			
+			startScaleTimer();
 		}
 		
-		private const ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
-		private var angle:Number = 2 * Math.PI * Math.random();
-		private var step:Number = 2;
-		private var rotStep:Number = Math.random() * 5 + 5;
-		private var rotMult:Number;
+		private var scaleTimer:Timer;
+		private function startScaleTimer():void 
+		{
+			var timerTime:Number = Math.min(Math.random() * 5, 1);
+			//scaleTimer = new Timer(timerTime * 1000, 1);
+			//scaleTimer.addEventListener(TimerEvent.TIMER_COMPLETE, startScaleTimer, false, 0, true);
+			
+			var newScale:Number = Math.min(Math.random() + 0.2, 1);
+			Actuate.tween(this, timerTime, { scaleX: newScale, scaleY: newScale } ).ease(Linear.easeNone).onComplete(startScaleTimer);
+		}
 		
 		private function nextMove (event:Event = null) : void {
 				
@@ -129,7 +145,7 @@ package
 			var tmp_x:Number = x;
 			var tmp_y:Number = y;
 			
-			Actuate.tween(this, MOVE_DELAY / 1000, { x: xpos, y: ypos, rotation: newRotation } ).ease(Linear.easeNone);
+			Actuate.tween(this, MOVE_DELAY / 1000, { x: xpos, y: ypos, rotation: newRotation} ).ease(Linear.easeNone);
 			
 			//x = xpos;
 			//y = ypos;
