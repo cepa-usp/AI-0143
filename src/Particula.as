@@ -17,13 +17,17 @@ package
 		public static const H2O:String = "h2o";
 		public static const H2:String = "o2";
 		
-		private const MOVE_DELAY:Number = 100;
+		private var MOVE_DELAY:Number = 100;
 		
 		private var timer:Timer;
 		private const L:Number = 0.00001;
 		
 		private var area:MovieClip;
 		private var marked:Boolean;
+		
+		private var ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
+		private var angle:Number = 2 * Math.PI * Math.random();
+		private var step:Number = 2;
 		
 		public function Particula(type:String, area:MovieClip, marked:Boolean = false) 
 		{
@@ -40,6 +44,9 @@ package
 					break;
 				case H2O:
 					cor = 0x0000FF;
+					ANGULAR_SPREAD = 180 * Math.PI / 180;
+					step = 2;
+					MOVE_DELAY = 50;
 					break;
 				case H2:
 					cor = 0xFF8040
@@ -92,10 +99,6 @@ package
 			x = xpos;
 			y = ypos;
 		}
-		
-		private const ANGULAR_SPREAD:Number = 30 * Math.PI / 180;
-		private var angle:Number = 2 * Math.PI * Math.random();
-		private var step:Number = 2;
 		
 		private function nextMove (event:Event = null) : void {
 				
