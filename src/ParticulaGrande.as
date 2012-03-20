@@ -57,8 +57,8 @@ package
 				case H2O:
 					if (marked) addChild(new Part_H2O_m());
 					else addChild(new Part_H2O());
-					MOVE_DELAY = 80;
-					step = 10;
+					//MOVE_DELAY = 80;
+					//step = 10;
 					ANGULAR_SPREAD = 180 * Math.PI / 180;
 					break;
 				case H2:
