@@ -105,10 +105,11 @@ package
 			timer.start();
 			
 			lifeTimer.start();
-			
+			//this.scaleX = this.scaleY = Math.min(Math.random() + 0.2, 1);
+			this.scaleX = this.scaleY = 0;
+			var newScale:Number = Math.min(Math.random() + 0.2, 1);
 			//Actuate.tween(this, 1, { alpha: 1 } ).ease(Linear.easeNone);
-			Actuate.tween(this, 1, { scaleX: 1, scaleY: 1 } ).ease(Linear.easeNone);
-			this.scaleX = this.scaleY = Math.min(Math.random() + 0.2, 1);
+			Actuate.tween(this, 1, { scaleX: newScale, scaleY: newScale } ).ease(Linear.easeNone);
 			
 			startScaleTimer();
 		}
