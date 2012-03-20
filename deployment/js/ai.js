@@ -1,11 +1,7 @@
 var scorm = pipwerks.SCORM; // Seção SCORM
 scorm.version = "2004"; // Versão da API SCORM
 
-var memento = {};
-var session = {};
-
 $(document).ready(init); // Inicia a AI.
-$(window).unload(uninit); // Encerra a AI.
 
 /*
  * Inicia a Atividade Interativa (AI)
@@ -31,11 +27,3 @@ function init () {
 	
 }
 
-
-/*
- * Encerra a Atividade Interativa (AI)
- */ 
-function uninit () {
-	scorm.save();
-	scorm.quit();
-}
