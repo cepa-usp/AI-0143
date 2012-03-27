@@ -269,7 +269,7 @@ package
 		private var tutoBaloonPos:Array;
 		private var tutoPos:int;
 		private var tutoSequence:Array = ["Nesta atividade você deve reproduzir a experiência de Ruben e Kamen, indentificando a origem do oxigênio formado pela fotossíntese: a água ou o dióxido de carbono?",
-										  "Neste recipiente há um pé de feijão exposto à luz e com suprimento controlado de dióxido de carbono e água.",
+										  "Neste recipiente há um pé de milho exposto à luz e com suprimento controlado de dióxido de carbono e água.",
 										  "Mova o mouse sobre o recipiente para \"ver\" mais de perto as moléculas.",
 										  "Selecione para marcar o dióxido de carbono com o isótopo 18 do átomo Oxigênio.",
 										  "Selecione para marcar as moléculas de oxigênio com o isótopo 18 do átomo Oxigênio."];
